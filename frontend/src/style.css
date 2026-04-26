@@ -1,0 +1,225 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: 'Syne', 'Inter', system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light;
+  color: #1A0B3E;
+  background-color: #ffffff;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --sidebar-w: 260px;
+  --app-bg: #f2f7fb;
+  --card-radius: 18px;
+  --tap-min: 44px;
+}
+
+a {
+  font-weight: 500;
+  color: #6C63FF;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #A855F7;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100dvh;
+  background: var(--app-bg);
+  color: #18223a;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  min-height: var(--tap-min);
+}
+button:focus, button:active {
+  outline: none;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  min-height: var(--tap-min);
+}
+
+#app {
+  min-height: 100dvh;
+}
+
+img { max-width: 100%; height: auto; }
+
+/* Smooth page transitions */
+.fade-enter-active, .fade-leave-active { transition: opacity 0.25s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
+
+/* Scrollbar styling */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(108,99,255,0.25); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(108,99,255,0.45); }
+
+/* Mobile-first responsive */
+@media (max-width: 900px) {
+  :root { --sidebar-w: 0px; }
+}
+@media (max-width: 480px) {
+  :root {
+    --card-radius: 14px;
+  }
+
+  body {
+    font-size: 15px;
+    line-height: 1.45;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* Dashboard activity pages: make games and therapies reliably mobile-friendly. */
+@media (max-width: 980px) {
+  .tap-shell,
+  .snake-shell,
+  .mem-shell,
+  .emo-shell,
+  .flash-shell,
+  .sudoku-shell,
+  .draw-shell,
+  .color-shell,
+  .breath-shell,
+  .routine-shell,
+  .sensory-shell,
+  .speech-shell,
+  .sso-shell,
+  .story-shell,
+  .tom-shell {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: calc(100dvh - 84px) !important;
+    padding: 14px !important;
+    overflow-x: hidden !important;
+  }
+
+  .draw-shell canvas,
+  .color-shell canvas,
+  .snake-shell canvas {
+    width: min(100%, 520px) !important;
+    height: auto !important;
+  }
+
+  .draw-shell .layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .draw-shell .tools,
+  .tom-shell .slider-group,
+  .speech-shell .nav-row,
+  .story-shell .nav-row,
+  .sudoku-shell .actions,
+  .flash-shell .mode-toggle,
+  .flash-shell .done-btns,
+  .mem-shell .complete-btns,
+  .emo-shell .result-btns,
+  .breath-shell .stats-row,
+  .sensory-shell .timer-section,
+  .routine-shell .action-row {
+    flex-wrap: wrap !important;
+  }
+
+  .story-shell .story-img {
+    max-height: 56dvh !important;
+  }
+
+  .sudoku-shell .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    width: min(100%, 320px) !important;
+  }
+
+  .sudoku-shell .cell {
+    width: auto !important;
+    aspect-ratio: 1;
+    height: auto !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .tap-shell,
+  .snake-shell,
+  .mem-shell,
+  .emo-shell,
+  .flash-shell,
+  .sudoku-shell,
+  .draw-shell,
+  .color-shell,
+  .breath-shell,
+  .routine-shell,
+  .sensory-shell,
+  .speech-shell,
+  .sso-shell,
+  .story-shell,
+  .tom-shell {
+    padding: 10px !important;
+  }
+
+  .tap-shell .start-card,
+  .mem-shell .complete-card,
+  .emo-shell .result-card,
+  .flash-shell .quiz-card,
+  .flash-shell .done-card,
+  .story-shell .image-stage,
+  .speech-shell .prompt-card,
+  .breath-shell .enc-card,
+  .sensory-shell .detail-card,
+  .routine-shell .celeb-card,
+  .tom-shell .challenge-card {
+    padding: 14px !important;
+  }
+
+  .tap-shell .diff-row,
+  .tap-shell .hud,
+  .emo-shell .progress-bar-wrapper,
+  .speech-shell .progress-row,
+  .story-shell .nav-row,
+  .tom-shell .voice-options,
+  .tom-shell .word-categories {
+    gap: 8px !important;
+  }
+
+  .tom-shell .slider-control {
+    width: 100% !important;
+    max-width: 280px;
+  }
+
+  .tap-shell .target-emoji,
+  .mem-shell .card-sym,
+  .emo-shell .opt-emoji,
+  .flash-shell .quiz-emoji,
+  .speech-shell .prompt-emoji,
+  .breath-shell .face-emoji {
+    font-size: 1.8rem !important;
+  }
+}

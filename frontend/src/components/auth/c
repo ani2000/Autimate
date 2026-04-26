@@ -1,0 +1,290 @@
+<template>
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-info">
+        <h1>autimate</h1>
+        <p>Early-stage autism screening with personalized therapy guidance and safe parent-centered workflows.</p>
+        <ul>
+          <li>Questionnaire + video based ASD screening</li>
+          <li>Pseudo verification available when external services are unavailable</li>
+          <li>Doctor suggestions, therapy activities and social features</li>
+        </ul>
+      </div>
+
+      <div class="auth-form-wrap">
+        <div class="auth-tabs">
+          <button :class="{ active: currentForm === 'login' }" @click="toggleForm('login')">Login</button>
+          <button :class="{ active: currentForm === 'signup' }" @click="toggleForm('signup')">Sign up</button>
+        </div>
+
+        <form v-if="currentForm === 'login'" class="auth-form" @submit.prevent="login">
+          <label>Phone</label>
+          <input v-model="loginData.phone" type="text" placeholder="e.g., 01643806870" required />
+
+          <label>Password</label>
+          <input v-model="loginData.password" type="password" placeholder="Enter password" required />
+
+          <button type="submit" class="primary-btn">Login</button>
+          <router-link class="small-link" to="/auth/password/reset/">Forgot password?</router-link>
+        </form>
+
+        <form v-else class="auth-form" @submit.prevent="signup">
+          <label>Full Name</label>
+          <input v-model="signupData.fullName" type="text" placeholder="Guardian name" required />
+
+          <label>Phone</label>
+          <input v-model="signupData.phone" type="text" placeholder="e.g., 01643806870" required />
+
+          <label>Password</label>
+          <input v-model="signupData.password" type="password" placeholder="Set password" required />
+
+          <button type="submit" class="primary-btn">Create account</button>
+          <router-link class="small-link" to="/auth/otp/">Verify phone number</router-link>
+        </form>
+
+        <p v-if="message" class="message success">{{ message }}</p>
+        <p v-if="messageError" class="message error">{{ messageError }}</p>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios';
+import Cookies from 'js-cookie';
+
+export default {
+  name: 'AuthForm',
+  data() {
+    return {
+      currentForm: 'login',
+      signupData: {
+        fullName: '',
+        phone: '',
+        password: ''
+      },
+      loginData: {
+        phone: '',
+        password: ''
+      },
+      message: '',
+      messageError: '',
+    };
+  },
+  methods: {
+    toggleForm(form) {
+      this.currentForm = form;
+    },
+    async signup() {
+      try {
+        this.messageError = '';
+        this.message = '';
+        const response = await axios.post('http://localhost:8080/api/v1/auth/register', {
+          fullName: this.signupData.fullName,
+          phone: this.signupData.phone,
+          password: this.signupData.password
+        });
+
+        this.$router.push({
+          path: '/auth/otp/',
+          query: {
+            phone: this.signupData.phone,
+          }
+        });
+
+      } catch (error) {
+        this.messageError = "Error. Please try again";
+        this.message = "";
+      }
+    },
+
+
+
+    async login() {
+      this.messageError = '';
+      this.message = '';
+      try {
+        const response = await axios.post('http://localhost:8080/api/v1/auth/login', {
+          phone: this.loginData.phone,
+          password: this.loginData.password
+        });
+
+
+        //if response satus is true, a token has been sent.
+        console.log(response.data.verificationStatus)
+        if (response.data.verificationStatus == true) {
+          Cookies.set('token', response.data.token, { expires: 7 });
+          Cookies.set('name', response.data.fullName, { expires: 7 });
+
+          this.$router.push({
+            path: '/dashboard/'
+          })
+        }
+
+        //if not verified, set a code.
+        else {
+          this.messageError = "Please verify your account";
+
+          //send a verification code.
+          const response = await axios.get(`http://localhost:8080/api/v1/auth/send/otp/${this.loginData.phone}`);
+
+          if (response.data == "Verification SMS sent") {
+            this.$router.push({
+              path: '/auth/otp/',
+              query: {
+                phone: this.loginData.phone,
+              }
+            });
+          }
+        }
+
+      }
+      //if returns forbidden, means incorrect creds.
+      catch (error) {
+        this.messageError = "Incorrect phone/password";
+        this.message = "";
+      }
+    }
+  }
+};
+</script>
+
+
+<style scoped>
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+}
+
+.auth-card {
+  width: min(980px, 100%);
+  min-height: 560px;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.14);
+}
+
+.auth-info {
+  padding: 40px;
+  background: linear-gradient(160deg, #1d4ed8, #312e81);
+  color: #fff;
+}
+
+.auth-info h1 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.auth-info p {
+  line-height: 1.6;
+  margin-bottom: 16px;
+  opacity: 0.95;
+}
+
+.auth-info ul {
+  padding-left: 18px;
+  line-height: 1.8;
+  opacity: 0.95;
+}
+
+.auth-form-wrap {
+  padding: 34px;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.auth-tabs button {
+  border: 1px solid #dbeafe;
+  background: #eff6ff;
+  color: #1e3a8a;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.auth-tabs button.active {
+  background: #1d4ed8;
+  color: #fff;
+  border-color: #1d4ed8;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-form label {
+  margin-top: 8px;
+  font-weight: 600;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+.auth-form input {
+  height: 44px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  padding: 0 12px;
+  font-size: 0.95rem;
+}
+
+.primary-btn {
+  margin-top: 16px;
+  height: 46px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 700;
+}
+
+.small-link {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #1d4ed8;
+  text-decoration: none;
+}
+
+.message {
+  margin-top: 16px;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.message.success {
+  color: #15803d;
+}
+
+.message.error {
+  color: #b91c1c;
+}
+
+@media (max-width: 900px) {
+  .auth-card {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-info {
+    padding: 24px;
+  }
+
+  .auth-form-wrap {
+    padding: 24px;
+  }
+}
+</style>

@@ -1,0 +1,28 @@
+Generate a detailed text prompt for an AI image generator to create a very simple black-and-white line drawing of a common object that a child would recognize.
+The drawing should use only basic straight or curved lines, resembling a sketch made in Microsoft Paint.
+The object should be one of the following: a basic geometric shape (such as a circle, square, or triangle), a simple fruit (such as an apple or banana), an easily recognizable animal (such as a fish or cat using only minimal lines), or a common everyday object (such as a house, tree, or car).
+The drawing must be minimalistic, with no shading, textures, or extra details—just clean black lines on a plain white background.
+The prompt should be structured to ensure that the AI generates a clear and child-friendly image that looks hand-drawn in a basic digital drawing tool.
+
+
+Here are some common objects and animals that a 4-5 year old might have seen, and that can be easily drawn using just simple lines:
+
+Regular Objects:
+House - A simple square or rectangle with a triangle on top for the roof.
+Tree - A straight line for the trunk and a cloud-like shape for the leaves.
+Ball - A simple circle.
+Cup - A rectangle with a curved line for the handle.
+Car - A rectangle with circles for wheels.
+Book - A rectangle with a line in the middle to represent the spine.
+Chair - Four straight lines for legs, a rectangle for the seat, and a horizontal line for the backrest.
+Cloud - Just a wavy, fluffy line.
+Sun - A circle with straight lines radiating from it.
+Apple - A simple circle with a short line for the stem.
+Animals:
+Cat - A round head with triangle ears, a small body, and a long, curved line for the tail.
+Fish - A triangle for the tail and an oval for the body.
+Dog - A round head with floppy ears, a small oval body, and a tail.
+Bird - A small oval body, a circle for the head, and a simple wing shape.
+Butterfly - Two symmetrical, wavy shapes for the wings and a line for the body in the middle.
+Duck - A circle for the head, a curved line for the body, and a flat oval for the beak.
+These objects are simple enough to be drawn quickly by young kids with basic lines and shapes.
