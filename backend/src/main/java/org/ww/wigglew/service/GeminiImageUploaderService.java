@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class GeminiImageUploaderService {
 //    @Value("${GEMINI_API_KEY}")
-    private static String API_KEY = "AIzaSyBn8zt_nQqt_5R9YHLqHHkvN2DRbXf6NW8";
+    private static String API_KEY = "AIzaSrW8";
     private static String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + API_KEY;
 
     public String getImageFeedback(String imagePath){
